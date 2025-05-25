@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 import logo from '../assets/Logo.png';
-
 
 type UserType = 'STUDENT' | 'PROFESSOR';
 
@@ -27,6 +26,7 @@ const Register: React.FC = () => {
   });
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterRequest, string>>>({});
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors: Partial<Record<keyof RegisterRequest, string>> = {};
@@ -76,8 +76,16 @@ const Register: React.FC = () => {
       const { accessToken, refreshToken } = response.data;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('userType', formData.userType); // Сохраняем userType
       setMessage('Регистрация прошла успешно!');
       console.log('Registration successful:', response.data);
+
+      // Перенаправление после регистрации
+      if (formData.userType === 'STUDENT') {
+        navigate('/student-dashboard');
+      } else if (formData.userType === 'PROFESSOR') {
+        navigate('/professor-dashboard');
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         setMessage(`Ошибка при регистрации: ${error.message}`);
