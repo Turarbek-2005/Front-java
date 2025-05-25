@@ -76,11 +76,10 @@ const Register: React.FC = () => {
       const { accessToken, refreshToken } = response.data;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('userType', formData.userType); // Сохраняем userType
+      localStorage.setItem('userType', formData.userType);
       setMessage('Регистрация прошла успешно!');
       console.log('Registration successful:', response.data);
 
-      // Перенаправление после регистрации
       if (formData.userType === 'STUDENT') {
         navigate('/student-dashboard');
       } else if (formData.userType === 'PROFESSOR') {

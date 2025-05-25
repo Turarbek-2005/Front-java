@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import logo from '../assets/LogoWhite.png';
-import profileLogo from '../assets/profileLogo.png';
+import Header from '../components/Header';
 
 interface Course {
   id: string;
@@ -78,41 +77,8 @@ const StudentDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Шапка */}
-      <header className="bg-black text-white p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <img src={logo} alt="Logo" />
-        </div>
-        <div className="flex items-center ml-auto space-x-4 mr-5">
-          <div className="relative inline-block right-0">
-            <input
-              type="text"
-              placeholder="Поиск..."
-              className="w-80 p-2 pl-8 rounded bg-gray-800 text-white focus:outline-none"
-            />
-            <svg
-              className="w-5 h-5 absolute left-2 top-3 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
-        <div>
-          <img src={profileLogo} alt="Profile Logo" />
-        </div>
-      </header>
-
-      {/* Основной контент */}
+      <Header /> 
       <main className="p-6">
-        {/* Секция "Все курсы" */}
         <section>
           <h2 className="text-xl font-bold mb-4">Все курсы</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

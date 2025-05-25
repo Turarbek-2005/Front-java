@@ -70,7 +70,6 @@ const Login: React.FC = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
-      // Запрос к /api/auth/me для получения userType
       const userInfo = await api.get<UserResponse>('/api/auth/me', {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -93,7 +92,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (message === 'Вход выполнен успешно!') {
       const userType = localStorage.getItem('userType') as 'STUDENT' | 'PROFESSOR' | null;
-      console.log('useEffect - userType:', userType); // Отладка
+      console.log('useEffect - userType:', userType); 
       if (userType === 'STUDENT') {
         console.log('Redirecting to /student-dashboard');
         navigate('/student-dashboard');
@@ -101,7 +100,7 @@ const Login: React.FC = () => {
         console.log('Redirecting to /professor-dashboard');
         navigate('/professor-dashboard');
       } else {
-        console.log('Unknown userType:', userType); // Если userType некорректен
+        console.log('Unknown userType:', userType); 
         setMessage('Ошибка: Неизвестный тип пользователя');
       }
     }

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
-import logo from '../assets/LogoWhite.png';
-import profileLogo from '../assets/profileLogo.png';
+import Header from '../components/Header';
+
+interface Test {
+  questions?: string[];
+  answers?: string[];
+}
 
 interface Module {
   id: string;
@@ -24,7 +28,7 @@ interface Module {
   moduleTitle: string;
   text: string | null;
   video: { id: string; videoUrl: string } | null;
-  test: any | null;
+  test: Test | null;
 }
 
 interface ModulesResponse {
@@ -66,11 +70,7 @@ const CourseDetail: React.FC = () => {
         if (err instanceof Error) {
           setError(`Ошибка при загрузке модулей: ${err.message}`);
           console.error('Fetch modules failed:', err.message);
-          if ('response' in err && err.response) {
-            console.error('Response data:', err.response.data);
-            console.error('Response status:', err.response.status);
-            console.error('Response headers:', err.response.headers);
-          }
+
         } else {
           setError('Неизвестная ошибка при загрузке модулей');
           console.error('Fetch modules failed:', err);
@@ -89,7 +89,7 @@ const CourseDetail: React.FC = () => {
       setCurrentModuleIndex(currentModuleIndex + 1);
     } else {
       alert('Курс завершен! Переход к тестированию.');
-      navigate('/test'); // Пример перехода к тесту
+      navigate('/test');
     }
   };
 
@@ -101,41 +101,8 @@ const CourseDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Шапка */}
-      <header className="bg-black text-white p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <img src={logo} alt="Logo" />
-        </div>
-        <div className="flex items-center ml-auto space-x-4 mr-5">
-          <div className="relative inline-block right-0">
-            <input
-              type="text"
-              placeholder="Поиск..."
-              className="w-80 p-2 pl-8 rounded bg-gray-800 text-white focus:outline-none"
-            />
-            <svg
-              className="w-5 h-5 absolute left-2 top-3 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
-        <div>
-          <img src={profileLogo} alt="Profile Logo" />
-        </div>
-      </header>
-
-      {/* Основной контент */}
+      <Header />
       <div className="flex flex-1">
-        {/* Боковая панель с модулями */}
         <aside className="w-64 bg-white p-4 shadow">
           <h2 className="text-lg font-bold mb-4">{currentModule.course.title}</h2>
           <p className="text-sm text-gray-600 mb-4">
@@ -161,8 +128,6 @@ const CourseDetail: React.FC = () => {
             ))}
           </ul>
         </aside>
-
-        {/* Контент модуля */}
         <main className="flex-1 p-6">
           <h1 className="text-2xl font-bold mb-4">{currentModule.moduleTitle}</h1>
           {currentModule.moduleType === 'TEXT' && currentModule.text && (
