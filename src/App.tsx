@@ -4,6 +4,7 @@ import Login from './authorization/Login';
 import StudentDashboard from './home/StudentDashboard';
 import ProfessorDashboard from './home/ProfessorDashboard';
 import CourseDetail from './modules/CourseDetail';
+import CreateCourse from './createCouses/CreateCourse';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Route path="/student-dashboard" element={<StudentDashboard />} />
         <Route path="/course/:id" element={<CourseDetail />} />
         <Route path="/professor-dashboard" element={<ProfessorDashboard />} />
+        <Route path="/course/:id" element={<CourseDetail />} />
+        <Route path="/create-course" element={<CreateCourse />} />
       </Routes> 
     </Router>  
   );
