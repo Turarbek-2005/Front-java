@@ -55,29 +55,30 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+      if (!validateForm()) return;
 
-    const request: LoginRequest = {
-      username: formData.username,
-      password: formData.password,
-    };
+      const request: LoginRequest = {
+        username: formData.username,
+        password: formData.password,
+      };
 
-    try {
-      const response = await api.post<LoginResponse>('/api/auth/login', request, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const { accessToken, refreshToken } = response.data;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      try {
+        const response = await api.post<LoginResponse>('/api/auth/login', request, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const { accessToken, refreshToken } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
 
-      const userInfo = await api.get<UserResponse>('/api/auth/me', {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const { userType } = userInfo.data;
-      localStorage.setItem('userType', userType);
-      setMessage('Вход выполнен успешно!');
-      console.log('Login successful - userType:', userType);
-    } catch (error: unknown) {
+        const userInfo = await api.get<UserResponse>('/api/auth/me', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const { userType, id } = userInfo.data;
+        localStorage.setItem('userType', userType);
+        localStorage.setItem('userId', id); // Сохраняем userId
+        setMessage('Вход выполнен успешно!');
+        console.log('Login successful - userType:', userType);
+      } catch (error: unknown) {
       if (error instanceof Error) {
         setMessage(`Ошибка при входе: ${error.message}`);
         console.error('Login failed:', error.message);
@@ -92,7 +93,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (message === 'Вход выполнен успешно!') {
       const userType = localStorage.getItem('userType') as 'STUDENT' | 'PROFESSOR' | null;
-      console.log('useEffect - userType:', userType); 
+      console.log('useEffect - userType:', userType); // Отладка
       if (userType === 'STUDENT') {
         console.log('Redirecting to /student-dashboard');
         navigate('/student-dashboard');
@@ -100,7 +101,7 @@ const Login: React.FC = () => {
         console.log('Redirecting to /professor-dashboard');
         navigate('/professor-dashboard');
       } else {
-        console.log('Unknown userType:', userType); 
+        console.log('Unknown userType:', userType); // Если userType некорректен
         setMessage('Ошибка: Неизвестный тип пользователя');
       }
     }
