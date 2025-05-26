@@ -76,10 +76,7 @@ const ProfessorDashboard: React.FC = () => {
         if (err instanceof Error) {
           setError(`Ошибка при загрузке курсов: ${err.message}`);
           console.error('Fetch courses failed:', err.message);
-          if ('response' in err && err.response) {
-            console.error('Response data:', err.response.data);
-            console.error('Response status:', err.response.status);
-          }
+
         } else {
           setError('Неизвестная ошибка при загрузке курсов');
           console.error('Fetch courses failed:', err);
@@ -132,10 +129,7 @@ const ProfessorDashboard: React.FC = () => {
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error('Fetch modules failed:', err.message);
-        if ('response' in err && err.response) {
-          console.error('Response data:', err.response.data);
-          console.error('Response status:', err.response.status);
-        }
+
       }
       return [];
     }
@@ -174,13 +168,7 @@ const ProfessorDashboard: React.FC = () => {
       } else {
         if (err instanceof Error) {
           console.error('Delete module failed:', err.message);
-          if ('response' in err && err.response) {
-            console.error('Response data:', err.response.data);
-            console.error('Response status:', err.response.status);
-            if (err.response.status === 403) {
-              throw new Error('У вас недостаточно прав для удаления модуля. Убедитесь, что вы создатель курса.');
-            }
-          }
+          
         }
         throw new Error('Неизвестная ошибка при удалении модуля');
       }
