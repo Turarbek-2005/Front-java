@@ -7,7 +7,7 @@ interface Test {
   id?: string;
   questions?: string[];
   answers?: string[];
-  body?: string; // JSON строка с вопросами
+  body?: string; 
 }
 
 interface ParsedQuestion {
@@ -69,7 +69,6 @@ const TestComponent: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledAnswers, setShuffledAnswers] = useState<Record<number, Array<[string, string]>>>({});
 
-  // Функция для перемешивания массива
   const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -79,14 +78,12 @@ const TestComponent: React.FC<{
     return shuffled;
   };
 
-  // Парсим вопросы из JSON и перемешиваем варианты ответов
   useEffect(() => {
     if (test.body) {
       try {
         const parsedQuestions: ParsedQuestion[] = JSON.parse(test.body);
         setQuestions(parsedQuestions);
         
-        // Создаем перемешанные варианты ответов для каждого вопроса
         const shuffledAnswersMap: Record<number, Array<[string, string]>> = {};
         parsedQuestions.forEach(question => {
           const answersArray = Object.entries(question.ans_variants);
@@ -132,7 +129,6 @@ const TestComponent: React.FC<{
       const accessToken = localStorage.getItem('accessToken');
       
       if (accessToken) {
-        // Сохраняем результат через API
         await api.post(`/api/test-grades/${courseId}`, testResults.gradeData, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
@@ -142,7 +138,6 @@ const TestComponent: React.FC<{
       setIsCompleted(true);
     } catch (error) {
       console.error('Ошибка при сохранении результатов:', error);
-      // Показываем результат даже если сохранение не удалось
       setResults(testResults);
       setIsCompleted(true);
     } finally {
@@ -156,7 +151,6 @@ const TestComponent: React.FC<{
     setIsCompleted(false);
     setResults(null);
     
-    // Перемешиваем варианты ответов заново при перезапуске теста
     const shuffledAnswersMap: Record<number, Array<[string, string]>> = {};
     questions.forEach(question => {
       const answersArray = Object.entries(question.ans_variants);
@@ -212,7 +206,7 @@ const TestComponent: React.FC<{
             onClick={handleRestartTest}
             className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
           >
-            🔄 Пересдать
+            Пересдать
           </button>
           <button
             onClick={onComplete}
@@ -230,7 +224,6 @@ const TestComponent: React.FC<{
 
   return (
     <div className="bg-white rounded-lg shadow-lg">
-      {/* Заголовок теста */}
       <div className="p-4 border-b">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-gray-900">
@@ -238,7 +231,6 @@ const TestComponent: React.FC<{
           </h2>
         </div>
         
-        {/* Прогресс бар */}
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div 
             className="bg-green-600 h-2 rounded-full transition-all duration-300"
@@ -247,7 +239,6 @@ const TestComponent: React.FC<{
         </div>
       </div>
 
-      {/* Вопрос и варианты */}
       <div className="p-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">
           {question.question}
@@ -313,7 +304,6 @@ const TestComponent: React.FC<{
           ))}
         </div>
 
-        {/* Навигация */}
         <div className="flex justify-between items-center">
           <button
             onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
@@ -408,12 +398,11 @@ const CourseDetail: React.FC = () => {
       setCurrentModuleIndex(currentModuleIndex + 1);
     } else {
       alert('Курс завершен!');
-      navigate('/courses'); // или куда нужно перенаправить
+      navigate('/courses');
     }
   };
 
   const handleTestComplete = () => {
-    // После завершения теста переходим к следующему модулю
     handleNextModule();
   };
 
@@ -444,16 +433,15 @@ const CourseDetail: React.FC = () => {
                     : 'bg-white text-gray-700 opacity-60'
                 }`}
                 onClick={() => {
-                  // Разрешаем переход только к пройденным модулям или текущему
                   if (index <= currentModuleIndex) {
                     setCurrentModuleIndex(index);
                   }
                 }}
               >
                 <span className="text-xs">
-                  {module.moduleType === 'TEXT' && '📄'}
-                  {module.moduleType === 'VIDEO' && '🎥'}
-                  {module.moduleType === 'TEST' && '📝'}
+                  {module.moduleType === 'TEXT' }
+                  {module.moduleType === 'VIDEO' }
+                  {module.moduleType === 'TEST' }
                 </span>{' '}
                 Модуль {module.moduleNum}: {module.moduleTitle}
               </li>
@@ -498,7 +486,6 @@ const CourseDetail: React.FC = () => {
             />
           )}
           
-          {/* Кнопка "Следующий шаг" показываем только для TEXT и VIDEO модулей */}
           {currentModule.moduleType !== 'TEST' && (
             <button
               onClick={handleNextModule}

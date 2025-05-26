@@ -79,6 +79,7 @@ const StudentDashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <Header /> 
       <main className="p-6">
+        {/* Секция "Все курсы" */}
         <section>
           <h2 className="text-xl font-bold mb-4">Все курсы</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

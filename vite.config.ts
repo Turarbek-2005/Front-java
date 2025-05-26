@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [react(),tailwindcss()],
   css: {
-    postcss: './postcss.config.js', // Указываем путь к конфигурации PostCSS
+    postcss: './postcss.config.js', 
   },
   server: {
     proxy: {
